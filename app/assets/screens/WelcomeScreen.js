@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 
-
 import {
 	StyleSheet,
 	Text,
 	View,
 	Button,
-	TouchableHighlight,
+	TouchableOpacity,
 	AsyncStorage,
 } from 'react-native';
 import { TASKS_KEY } from '../storageKeys';
@@ -48,15 +47,24 @@ function WelcomeScreen(props) {
 			console.log('Failed to fetch tasks from storage', e);
 		}
 	};
-
+	const deleteTask = async () => {
+		try {
+			await AsyncStorage.removeItem();
+			console.log('Task successfully cleared!', e);
+		} catch (e) {
+			console.log('Failed to clear the task from async storage', e);
+		}
+	};
 	const renderTask = (task) => {
 		console.log(task);
 		let categoryValue = task['category'];
 		let taskValue = task['task'];
 		return (
-			<Text>
-				{categoryValue}: {taskValue}
-			</Text>
+			<TouchableOpacity>
+				<Text onPress={this.deleteTask} style={styles.item}>
+					{categoryValue}: {taskValue}
+				</Text>
+			</TouchableOpacity>
 		);
 	};
 
@@ -77,8 +85,13 @@ function WelcomeScreen(props) {
 }
 
 const styles = StyleSheet.create({
-	test: {
-		backgroundColor: 'pink',
+	item: {
+		padding: 16,
+		marginTop: 16,
+		borderColor: '#bbb',
+		borderWidth: 1,
+		borderStyle: 'dashed',
+		borderRadius: 10,
 	},
 });
 

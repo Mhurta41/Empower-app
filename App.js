@@ -16,18 +16,19 @@ import {
 
 export default function App() {
 	const renderHeader = () => {
-		return (
-			<View style={styles.header}>
-				<Header />
-			</View>
-		);
+		return <View style={styles.header}>{<Header />}</View>;
 	};
 
 	const renderBody = () => {
-		return <WelcomeScreen style={styles.container} />;
+		return (
+			<View>
+				<WelcomeScreen style={styles.container} />;
+			</View>
+		);
 		//return <NewTaskScreen />;
 	};
 
+	const pressHandler = (key) => {};
 	const Stack = createStackNavigator();
 	AsyncStorage.clear();
 	return (
@@ -46,7 +47,9 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
-	header: {},
+	header: {
+		justifyContent: 'center',
+	},
 });
 
 // import Alert api, use .prompt to ask question that needs response but not on android, safeareaview only for ios so use import platform and statusbar
