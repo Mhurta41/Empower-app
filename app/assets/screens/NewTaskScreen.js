@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-// import { Dropdown } from 'react-native-material-dropdown';
+
 import {
 	View,
 	Text,
