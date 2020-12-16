@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
+import Header from '../components/Header';
 
 import {
 	StyleSheet,
@@ -88,6 +89,7 @@ function WelcomeScreen(props) {
 
 	return (
 		<View>
+			<Header />
 			{renderTasks()}
 			{addTaskButton()}
 		</View>

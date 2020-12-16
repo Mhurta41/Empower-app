@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Header from '../components/Header';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -111,6 +112,7 @@ function NewTaskScreen(props) {
 	};
 	return (
 		<View>
+			<Header />
 			{renderForm()}
 			{renderSubmitButton()}
 		</View>
