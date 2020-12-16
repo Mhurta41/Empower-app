@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 
-
 import {
 	StyleSheet,
 	Text,
 	View,
 	Button,
-	TouchableHighlight,
+	TouchableOpacity,
 	AsyncStorage,
 } from 'react-native';
 import { TASKS_KEY } from '../storageKeys';
 
 function WelcomeScreen(props) {
-	const [tasks, setTasks] = useState([]);
+	const [tasks, setTasks] = useState({});
 	const isFocused = useIsFocused();
 
 	useEffect(() => {
@@ -43,27 +42,46 @@ function WelcomeScreen(props) {
 
 			if (readTasks !== null) {
 				setTasks(readTasks);
+				// tasks = { {task1}, {task2}, ...}
 			}
 		} catch (e) {
 			console.log('Failed to fetch tasks from storage', e);
 		}
 	};
+	const deleteTask = async (taskId) => {
+		const tempTasks = { ...tasks };
+		delete tempTasks[taskId];
+		const stringifiedTasksObject = JSON.stringify(tempTasks);
+		await AsyncStorage.setItem(TASKS_KEY, stringifiedTasksObject);
+		setTasks(tempTasks);
+	};
 
-	const renderTask = (task) => {
+	const editTask = (taskId) => {
+		const task = tasks[taskId];
+		props.navigation.navigate('NewTaskScreen', { task, taskId });
+	};
+
+	const renderTask = (taskId) => {
+		const task = tasks[taskId];
 		console.log(task);
 		let categoryValue = task['category'];
-		let taskValue = task['task'];
+		let taskValue = task['taskName'];
 		return (
-			<Text>
-				{categoryValue}: {taskValue}
-			</Text>
+			<TouchableOpacity style={styles.item}>
+				<Text>
+					{categoryValue}: {taskValue}
+				</Text>
+				<Button title='delete' onPress={() => deleteTask(taskId)} />
+				<Button title='edit' onPress={() => editTask(taskId)} />
+			</TouchableOpacity>
 		);
 	};
 
 	const renderTasks = () => {
 		const renderedTasks = [];
-		for (const task of tasks) {
-			renderedTasks.push(renderTask(task));
+		console.log('tasks', tasks);
+		for (const taskId in tasks) {
+			renderedTasks.push(renderTask(taskId));
 		}
 		return <View>{renderedTasks}</View>;
 	};
@@ -77,8 +95,13 @@ function WelcomeScreen(props) {
 }
 
 const styles = StyleSheet.create({
-	test: {
-		backgroundColor: 'pink',
+	item: {
+		padding: 16,
+		marginTop: 16,
+		borderColor: '#bbb',
+		borderWidth: 1,
+		borderStyle: 'solid',
+		borderRadius: 10,
 	},
 });
 
