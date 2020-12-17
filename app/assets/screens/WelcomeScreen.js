@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import Header from '../components/Header';
-
 import {
+	Image,
+	TouchableHighlight,
 	StyleSheet,
 	Text,
 	View,
@@ -29,10 +30,13 @@ function WelcomeScreen(props) {
 
 	const addTaskButton = () => {
 		return (
-			<Button
-				title='Add Task'
-				onPress={() => props.navigation.navigate('NewTaskScreen')}
-			/>
+			<TouchableHighlight
+				onPress={() => props.navigation.navigate('NewTaskScreen')}>
+				<Image
+					style={styles.addButton}
+					source={require('../Images/empower-add.png')}
+				/>
+			</TouchableHighlight>
 		);
 	};
 	const readData = async () => {
@@ -68,13 +72,23 @@ function WelcomeScreen(props) {
 		let categoryValue = task['category'];
 		let taskValue = task['taskName'];
 		return (
-			<TouchableOpacity style={styles.item}>
-				<Text>
+			<View style={styles.item}>
+				<Text style={styles.taskText}>
 					{categoryValue}: {taskValue}
 				</Text>
-				<Button title='delete' onPress={() => deleteTask(taskId)} />
-				<Button title='edit' onPress={() => editTask(taskId)} />
-			</TouchableOpacity>
+				<TouchableHighlight onPress={() => editTask(taskId)}>
+					<Image
+						style={styles.taskButtons}
+						source={require('../Images/empower-edit.png')}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight onPress={() => deleteTask(taskId)}>
+					<Image
+						style={styles.taskButtons}
+						source={require('../Images/empower-delete.png')}
+					/>
+				</TouchableHighlight>
+			</View>
 		);
 	};
 
@@ -100,10 +114,28 @@ const styles = StyleSheet.create({
 	item: {
 		padding: 16,
 		marginTop: 16,
-		borderColor: '#bbb',
-		borderWidth: 1,
+		borderColor: '#14b274',
+		borderWidth: 2,
 		borderStyle: 'solid',
 		borderRadius: 10,
+		width: 400,
+		alignItems: 'center',
+		alignSelf: 'center',
+	},
+	taskText: {
+		fontWeight: 'bold',
+		fontSize: 18,
+		color: '#14b274',
+		flexDirection: 'column',
+	},
+	taskButtons: {
+		width: 20,
+		height: 20,
+	},
+	addButton: {
+		width: 50,
+		height: 50,
+		alignSelf: 'center',
 	},
 });
 

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { Dropdown } from 'react-native-material-dropdown';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
 import {
 	View,
 	Text,
 	Button,
 	TextInput,
 	AsyncStorage,
-	Alert,
+	StyleSheet,
+	TouchableHighlight,
+	Image,
 } from 'react-native';
 import { TASKS_KEY } from '../storageKeys';
 
@@ -62,7 +60,6 @@ function NewTaskScreen(props) {
 
 			let taskId = Math.floor(Math.random() * MAX_ID_NUMBER).toString();
 
-			console.log(TASKS_KEY);
 			if (readCurrentTasks == null) {
 				const myTasksObject = {};
 				myTasksObject[taskId] = myTask;
@@ -91,12 +88,15 @@ function NewTaskScreen(props) {
 
 	const renderSubmitButton = () => {
 		return (
-			<Button
-				title='Submit'
+			<TouchableHighlight
 				onPress={() => {
 					saveData();
-				}}
-			/>
+				}}>
+				<Image
+					style={styles.submitButton}
+					source={require('../Images/empower-submit.png')}
+				/>
+			</TouchableHighlight>
 		);
 	};
 
@@ -105,24 +105,26 @@ function NewTaskScreen(props) {
 			<View>
 				<Dropdown
 					onChangeText={(newCategory) => setCategory(newCategory)}
+					style={styles.dropdown}
 					label='Select a category'
 					data={categoryData}
+					value={category}
 				/>
-				<Text>Task:</Text>
+				<Text style={styles.formText}>Task:</Text>
 				<TextInput
-					style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+					style={styles.formField}
 					onChangeText={(newTask) => setTaskName(newTask)}
 					value={taskName}
 				/>
-				<Text>Due Date:</Text>
+				<Text style={styles.formText}>Due Date:</Text>
 				<TextInput
-					style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+					style={styles.formField}
 					onChangeText={(newDueDate) => setDueDate(newDueDate)}
 					value={dueDate}
 				/>
-				<Text>Reminder Frequency:</Text>
+				<Text style={styles.formText}>Reminder Frequency:</Text>
 				<TextInput
-					style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+					style={styles.formField}
 					onChangeText={(newReminder) => setReminder(newReminder)}
 					value={reminder}
 				/>
@@ -138,4 +140,34 @@ function NewTaskScreen(props) {
 	);
 }
 
+const styles = StyleSheet.create({
+	formField: {
+		height: 40,
+		borderColor: '#14b274',
+		borderWidth: 1,
+		borderWidth: 2,
+		borderStyle: 'solid',
+		borderRadius: 10,
+		width: 400,
+		alignItems: 'center',
+		alignSelf: 'center',
+		marginBottom: 10,
+	},
+	formText: {
+		fontWeight: 'bold',
+		marginLeft: 20,
+		marginBottom: 10,
+	},
+	dropdown: {
+		marginLeft: 20,
+		fontWeight: 'bold',
+		color: '#14b274',
+	},
+	submitButton: {
+		width: 150,
+		height: 40,
+		alignSelf: 'center',
+		marginTop: 30,
+	},
+});
 export default NewTaskScreen;
