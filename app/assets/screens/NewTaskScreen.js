@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
+import { Dropdown } from 'react-native-material-dropdown';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -21,6 +23,24 @@ function NewTaskScreen(props) {
 	const [dueDate, setDueDate] = useState('');
 	const [reminder, setReminder] = useState('');
 	const [givenTaskId, setGivenTaskId] = useState(undefined);
+
+	let categoryData = [
+		{
+			value: 'Work',
+		},
+		{
+			value: 'Social',
+		},
+		{
+			value: 'School',
+		},
+		{
+			value: 'Important',
+		},
+		{
+			value: 'Miscellaneous',
+		},
+	];
 
 	useEffect(() => {
 		const taskId = props.route.params?.taskId;
@@ -83,11 +103,10 @@ function NewTaskScreen(props) {
 	const renderForm = () => {
 		return (
 			<View>
-				<Text>Category:</Text>
-				<TextInput
-					style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+				<Dropdown
 					onChangeText={(newCategory) => setCategory(newCategory)}
-					value={category}
+					label='Select a category'
+					data={categoryData}
 				/>
 				<Text>Task:</Text>
 				<TextInput
