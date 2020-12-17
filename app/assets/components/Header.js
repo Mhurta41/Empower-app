@@ -1,27 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, SafeAreaView } from 'react-native';
 
-function Header(props) {
-	console.log('my props;', props);
+function Header() {
 	return (
-		<View style={styles.headerContainer}>
-			<Text style={styles.headerText}>Empower</Text>
-		</View>
+		<SafeAreaView>
+			<View style={styles.headerContainer}>
+				<Image
+					style={{ width: 230, height: 55 }}
+					source={require('../Images/empower.png')}
+				/>
+			</View>
+		</SafeAreaView>
 	);
 }
+
 const styles = StyleSheet.create({
 	headerContainer: {
+		alignItems: 'center',
 		height: 80,
-		paddingTop: 38,
-		backgroundColor: 'green',
-	},
-	headerText: {
-		color: '#fff',
-		textAlign: 'center',
-		fontSize: 20,
-		fontWeight: 'bold',
+		paddingTop: 15,
+		paddingBottom: 50,
+		marginBottom: 20,
+		backgroundColor: '#14b274',
 	},
 });
 
 export default Header;
-// '#14b274';

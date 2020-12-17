@@ -15,9 +15,13 @@ import {
 } from 'react-native';
 
 export default function App() {
-	const renderHeader = () => {
-		return <View style={styles.header}>{<Header />}</View>;
-	};
+	// const renderHeader = () => {
+	// 	return (
+	// 		<View style={styles.header}>
+	// 			<Header />
+	// 		</View>
+	// 	);
+	// };
 
 	const renderBody = () => {
 		return (
