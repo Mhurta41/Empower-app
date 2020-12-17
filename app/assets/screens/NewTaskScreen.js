@@ -110,6 +110,11 @@ function NewTaskScreen(props) {
 					data={categoryData}
 					value={category}
 				/>
+				{/* <TextInput
+					style={styles.formField}
+					onChangeText={(newCategory) => setCategory(newCategory)}
+					value={category}
+				/> */}
 				<Text style={styles.formText}>Task:</Text>
 				<TextInput
 					style={styles.formField}
@@ -152,6 +157,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		alignSelf: 'center',
 		marginBottom: 10,
+		paddingLeft: 15,
 	},
 	formText: {
 		fontWeight: 'bold',
@@ -159,9 +165,9 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 	dropdown: {
-		marginLeft: 20,
 		fontWeight: 'bold',
 		color: '#14b274',
+		paddingLeft: 20,
 	},
 	submitButton: {
 		width: 150,

@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		fontSize: 18,
 		color: '#14b274',
-		flexDirection: 'column',
 	},
 	taskButtons: {
 		width: 20,
