@@ -6,11 +6,10 @@ import moment from 'moment';
 import {
 	View,
 	Text,
-	Button,
 	TextInput,
 	AsyncStorage,
 	StyleSheet,
-	TouchableHighlight,
+	TouchableOpacity,
 	Image,
 } from 'react-native';
 import { TASKS_KEY } from '../storageKeys';
@@ -108,7 +107,7 @@ function NewTaskScreen(props) {
 
 	const renderSubmitButton = () => {
 		return (
-			<TouchableHighlight
+			<TouchableOpacity
 				onPress={() => {
 					saveData();
 				}}>
@@ -116,7 +115,7 @@ function NewTaskScreen(props) {
 					style={styles.submitButton}
 					source={require('../Images/empower-submit.png')}
 				/>
-			</TouchableHighlight>
+			</TouchableOpacity>
 		);
 	};
 
@@ -158,11 +157,6 @@ function NewTaskScreen(props) {
 					data={reminderData}
 					value={reminder}
 				/>
-				{/* <TextInput
-					style={styles.formField}
-					onChangeText={(newDueDate) => setDueDate(newDueDate)}
-					value={dueDate}
-				/> */}
 			</View>
 		);
 	};

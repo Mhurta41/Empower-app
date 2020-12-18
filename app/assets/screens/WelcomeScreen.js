@@ -3,11 +3,10 @@ import { useIsFocused } from '@react-navigation/native';
 import Header from '../components/Header';
 import {
 	Image,
-	TouchableHighlight,
+	ScrollView,
 	StyleSheet,
 	Text,
 	View,
-	Button,
 	TouchableOpacity,
 	AsyncStorage,
 } from 'react-native';
@@ -22,10 +21,6 @@ function WelcomeScreen(props) {
 			readData();
 		}
 	}, [isFocused]);
-
-	const handleClick = () => {
-		return {};
-	};
 
 	const addTaskButton = () => {
 		return (
@@ -64,12 +59,6 @@ function WelcomeScreen(props) {
 		props.navigation.navigate('NewTaskScreen', { task, taskId });
 	};
 
-	//delete this when you're done
-	const clearStorage = () => {
-		AsyncStorage.clear();
-		setTasks({});
-	};
-
 	const renderTask = (taskId) => {
 		const task = tasks[taskId];
 		let categoryValue = task['category'];
@@ -95,11 +84,6 @@ function WelcomeScreen(props) {
 		);
 	};
 
-	//delete this when you're done
-	const renderClearButton = () => {
-		return <Button title='delete storage' onPress={clearStorage} />;
-	};
-
 	const renderTasks = () => {
 		const renderedTasks = [];
 		for (const taskId in tasks) {
@@ -109,12 +93,13 @@ function WelcomeScreen(props) {
 	};
 
 	return (
-		<View>
-			<Header />
-			{renderTasks()}
-			{addTaskButton()}
-			{renderClearButton()}
-		</View>
+		<ScrollView>
+			<View>
+				<Header />
+				{renderTasks()}
+				{addTaskButton()}
+			</View>
+		</ScrollView>
 	);
 }
 
@@ -148,9 +133,11 @@ const styles = StyleSheet.create({
 		marginLeft: 310,
 	},
 	addButton: {
-		width: 50,
-		height: 50,
+		width: 60,
+		height: 60,
 		alignSelf: 'center',
+		position: 'absolute',
+		bottom: -650,
 	},
 });
 
