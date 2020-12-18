@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { Dropdown } from 'react-native-material-dropdown';
+import CalendarPicker from 'react-native-calendar-picker';
+import moment from 'moment';
 import {
 	View,
 	Text,
@@ -20,6 +22,7 @@ function NewTaskScreen(props) {
 	const [taskName, setTaskName] = useState('');
 	const [dueDate, setDueDate] = useState('');
 	const [reminder, setReminder] = useState('');
+	const [note, setNote] = useState('');
 	const [givenTaskId, setGivenTaskId] = useState(undefined);
 
 	let categoryData = [
@@ -40,6 +43,21 @@ function NewTaskScreen(props) {
 		},
 	];
 
+	let reminderData = [
+		{
+			value: 'Daily',
+		},
+		{
+			value: 'Weekly',
+		},
+		{
+			value: 'Monthly',
+		},
+		{
+			value: 'Annually',
+		},
+	];
+
 	useEffect(() => {
 		const taskId = props.route.params?.taskId;
 		const task = props.route.params?.task;
@@ -49,14 +67,16 @@ function NewTaskScreen(props) {
 			setTaskName(task['taskName']);
 			setDueDate(task['dueDate']);
 			setReminder(task['reminder']);
+			setNote(task['note']);
 		}
 	}, []);
 
 	const saveData = async () => {
 		try {
-			const myTask = { category, taskName, dueDate, reminder };
+			const myTask = { category, taskName, dueDate, reminder, note };
 			const readCurrentTasksAsString = await AsyncStorage.getItem(TASKS_KEY);
 			const readCurrentTasks = JSON.parse(readCurrentTasksAsString);
+			console.log('readCurrentTasks: ', readCurrentTasks);
 
 			let taskId = Math.floor(Math.random() * MAX_ID_NUMBER).toString();
 
@@ -65,10 +85,10 @@ function NewTaskScreen(props) {
 				myTasksObject[taskId] = myTask;
 				const stringifiedObject = JSON.stringify(myTasksObject);
 				await AsyncStorage.setItem(TASKS_KEY, stringifiedObject);
+				console.log('after save', stringifiedObject);
 			} else {
 				// While the taskId is taken, we generate a new one
 				while (readCurrentTasks[taskId] !== undefined) {
-					console.log(taskId);
 					taskId = Math.floor(Math.random() * MAX_ID_NUMBER).toString();
 				}
 				if (givenTaskId) {
@@ -101,6 +121,7 @@ function NewTaskScreen(props) {
 	};
 
 	const renderForm = () => {
+		console.log(moment(dueDate).toDate());
 		return (
 			<View>
 				<Dropdown
@@ -110,29 +131,38 @@ function NewTaskScreen(props) {
 					data={categoryData}
 					value={category}
 				/>
-				{/* <TextInput
-					style={styles.formField}
-					onChangeText={(newCategory) => setCategory(newCategory)}
-					value={category}
-				/> */}
 				<Text style={styles.formText}>Task:</Text>
 				<TextInput
 					style={styles.formField}
 					onChangeText={(newTask) => setTaskName(newTask)}
 					value={taskName}
 				/>
-				<Text style={styles.formText}>Due Date:</Text>
+				<Text style={styles.formText}>Notes:</Text>
 				<TextInput
+					style={styles.formField}
+					onChangeText={(newNote) => setNote(newNote)}
+					value={note}
+				/>
+				<Text style={styles.formText}>Due Date:</Text>
+				<CalendarPicker
+					onDateChange={(newDueDate) => setDueDate(newDueDate)}
+					todayBackgroundColor={'#14b274'}
+					selectedDayColor={'#7C541F'}
+					selectedStartDate={moment(dueDate)}
+				/>
+
+				<Dropdown
+					onChangeText={(newReminder) => setReminder(newReminder)}
+					style={styles.dropdown}
+					label='Select a reminder frequency'
+					data={reminderData}
+					value={reminder}
+				/>
+				{/* <TextInput
 					style={styles.formField}
 					onChangeText={(newDueDate) => setDueDate(newDueDate)}
 					value={dueDate}
-				/>
-				<Text style={styles.formText}>Reminder Frequency:</Text>
-				<TextInput
-					style={styles.formField}
-					onChangeText={(newReminder) => setReminder(newReminder)}
-					value={reminder}
-				/>
+				/> */}
 			</View>
 		);
 	};
@@ -153,10 +183,10 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderStyle: 'solid',
 		borderRadius: 10,
-		width: 400,
+		width: 350,
 		alignItems: 'center',
 		alignSelf: 'center',
-		marginBottom: 10,
+		marginBottom: 5,
 		paddingLeft: 15,
 	},
 	formText: {

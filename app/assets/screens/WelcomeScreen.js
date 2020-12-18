@@ -18,7 +18,6 @@ function WelcomeScreen(props) {
 	const isFocused = useIsFocused();
 
 	useEffect(() => {
-		console.log('using effect');
 		if (isFocused) {
 			readData();
 		}
@@ -30,17 +29,16 @@ function WelcomeScreen(props) {
 
 	const addTaskButton = () => {
 		return (
-			<TouchableHighlight
+			<TouchableOpacity
 				onPress={() => props.navigation.navigate('NewTaskScreen')}>
 				<Image
 					style={styles.addButton}
 					source={require('../Images/empower-add.png')}
 				/>
-			</TouchableHighlight>
+			</TouchableOpacity>
 		);
 	};
 	const readData = async () => {
-		console.log('data is being read');
 		try {
 			const readTasksAsString = await AsyncStorage.getItem(TASKS_KEY);
 			const readTasks = JSON.parse(readTasksAsString);
@@ -66,9 +64,14 @@ function WelcomeScreen(props) {
 		props.navigation.navigate('NewTaskScreen', { task, taskId });
 	};
 
+	//delete this when you're done
+	const clearStorage = () => {
+		AsyncStorage.clear();
+		setTasks({});
+	};
+
 	const renderTask = (taskId) => {
 		const task = tasks[taskId];
-		console.log(task);
 		let categoryValue = task['category'];
 		let taskValue = task['taskName'];
 		return (
@@ -76,25 +79,29 @@ function WelcomeScreen(props) {
 				<Text style={styles.taskText}>
 					{categoryValue}: {taskValue}
 				</Text>
-				<TouchableHighlight onPress={() => editTask(taskId)}>
+				<TouchableOpacity onPress={() => editTask(taskId)}>
 					<Image
-						style={styles.taskButtons}
+						style={styles.editButton}
 						source={require('../Images/empower-edit.png')}
 					/>
-				</TouchableHighlight>
-				<TouchableHighlight onPress={() => deleteTask(taskId)}>
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => deleteTask(taskId)}>
 					<Image
-						style={styles.taskButtons}
+						style={styles.deleteButton}
 						source={require('../Images/empower-delete.png')}
 					/>
-				</TouchableHighlight>
+				</TouchableOpacity>
 			</View>
 		);
 	};
 
+	//delete this when you're done
+	const renderClearButton = () => {
+		return <Button title='delete storage' onPress={clearStorage} />;
+	};
+
 	const renderTasks = () => {
 		const renderedTasks = [];
-		console.log('tasks', tasks);
 		for (const taskId in tasks) {
 			renderedTasks.push(renderTask(taskId));
 		}
@@ -106,19 +113,20 @@ function WelcomeScreen(props) {
 			<Header />
 			{renderTasks()}
 			{addTaskButton()}
+			{renderClearButton()}
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
 	item: {
-		padding: 16,
+		padding: 25,
 		marginTop: 16,
 		borderColor: '#14b274',
 		borderWidth: 2,
 		borderStyle: 'solid',
 		borderRadius: 10,
-		width: 400,
+		width: 350,
 		alignItems: 'center',
 		alignSelf: 'center',
 	},
@@ -127,9 +135,17 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		color: '#14b274',
 	},
-	taskButtons: {
+	editButton: {
 		width: 20,
 		height: 20,
+		marginLeft: 310,
+		marginBottom: -15,
+	},
+	deleteButton: {
+		width: 20,
+		height: 20,
+		marginTop: -45,
+		marginLeft: 310,
 	},
 	addButton: {
 		width: 50,
