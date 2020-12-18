@@ -75,7 +75,6 @@ function NewTaskScreen(props) {
 			const myTask = { category, taskName, dueDate, reminder, note };
 			const readCurrentTasksAsString = await AsyncStorage.getItem(TASKS_KEY);
 			const readCurrentTasks = JSON.parse(readCurrentTasksAsString);
-			console.log('readCurrentTasks: ', readCurrentTasks);
 
 			let taskId = Math.floor(Math.random() * MAX_ID_NUMBER).toString();
 
@@ -84,7 +83,6 @@ function NewTaskScreen(props) {
 				myTasksObject[taskId] = myTask;
 				const stringifiedObject = JSON.stringify(myTasksObject);
 				await AsyncStorage.setItem(TASKS_KEY, stringifiedObject);
-				console.log('after save', stringifiedObject);
 			} else {
 				// While the taskId is taken, we generate a new one
 				while (readCurrentTasks[taskId] !== undefined) {
@@ -120,7 +118,6 @@ function NewTaskScreen(props) {
 	};
 
 	const renderForm = () => {
-		console.log(moment(dueDate).toDate());
 		return (
 			<View>
 				<Dropdown

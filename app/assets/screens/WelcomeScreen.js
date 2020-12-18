@@ -40,7 +40,6 @@ function WelcomeScreen(props) {
 
 			if (readTasks !== null) {
 				setTasks(readTasks);
-				// tasks = { {task1}, {task2}, ...}
 			}
 		} catch (e) {
 			console.log('Failed to fetch tasks from storage', e);
@@ -88,6 +87,14 @@ function WelcomeScreen(props) {
 		const renderedTasks = [];
 		for (const taskId in tasks) {
 			renderedTasks.push(renderTask(taskId));
+		}
+		if (renderedTasks.length === 0) {
+			return (
+				<Image
+					style={styles.bigLogo}
+					source={require('../Images/empower-main-logo.png')}
+				/>
+			);
 		}
 		return <View>{renderedTasks}</View>;
 	};
@@ -137,7 +144,13 @@ const styles = StyleSheet.create({
 		height: 60,
 		alignSelf: 'center',
 		position: 'absolute',
-		bottom: -650,
+		bottom: -150,
+	},
+	bigLogo: {
+		alignSelf: 'center',
+		width: 350,
+		height: 400,
+		marginTop: 100,
 	},
 });
 
